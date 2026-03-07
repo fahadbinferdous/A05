@@ -28,6 +28,7 @@
 </head>
 <body class="min-h-screen bg-[#F8FAFC]">
     <header>
+        <!-- logo and search -->
         <Section class="navbar bg-base-100 shadow-sm flex justify-between px-20">
             <div class="flex items-center gap-3">
                 <img src="assets/github-logo.png" alt="" class="h-10 w-10">
@@ -40,18 +41,59 @@
         </Section>
     </header>
     <main class="w-5/6 mx-auto my-14">
-        <Section class="bg-white px-5 py-7 shadow-sm rounded-xl">
+        <!-- filter buttons sectio -->
+        <Section class="bg-white my-5 px-5 py-5 shadow-sm rounded-xl">
             <button onclick="activeBtn('all-Btn')" id="all-Btn" class="btn btn-primary px-10">All</button>
             <button onclick="activeBtn('open-Btn')" id="open-Btn" class="btn px-10">Open</button>
             <button onclick="activeBtn('closed-Btn')" id="closed-Btn" class="btn px-10">Closed</button>
         </Section>
-        <Section>
+        <!-- dashboard section -->
+        <Section class="bg-white flex justify-between px-5 py-5 rounded-t-xl">
+            <div class="flex justify-between items-center gap-3">
+                <img src="assets/Aperture.png" alt="">
+                <div>
+                    <h2 class="text-xl font-semibold"><span>0 </span>Issues</h2>
+                    <p class="text-[#64748B]">Track and manage your project issues</p>
+                </div>
+            </div>          
+            <div class="flex justify-between items-center gap-5">
+                <div class="status status-success "></div> Open
+                <div class="status status-primary "></div> Closed
+            </div>      
+        </Section>
+        <!-- cards section -->
+        <section class="bg-[#fffefe] px-5 py-5 border-t-1 border-t-[#d5d9df] rounded-b-xl grid grid-cols-4 gap-3">
+            <div class="bg-white px-5 py-5 shadow-sm rounded-xl border-t-3 border-success space-y-5">
+                <div class="flex justify-between">
+                    <img src="assets/Open-Status.png" alt="">
+                    <img src="assets/Closed- Status .png" alt="">
+
+                    <div class="badge badge-soft badge-error">High</div>
+                    <div class="badge badge-soft badge-warning">Medium</div>
+                    <div class="badge badge-soft badge-ghost">Low</div>
+                </div> 
+
+                <h3 class="font-bold">Fix navigation menu on mobile devices</h3>
+                <p class="text-[#64748B]">The navigation menu doesn't collapse properly on mobile devices...</p>
+                <hr class="border-none bg-slate-400">
+                <div class="flex justify-between border-b-1]">
+                    <div class="badge badge-soft badge-error"><img src="assets/BugDroid.png" alt="">Bug</div>
+                    <div class="badge badge-soft badge-warning"><img src="assets/Help Wanted.png" alt="">Help Wanted</div>
+                    <div class="badge badge-soft badge-success"><img src="assets/Enhancement.png" alt="">Enhancement</div>
+                </div>
+                <hr class="border-t-1 border-[#d5d9df]">
+                <p class="text-[#64748B]">#1 by john_doe </p>
+                <p class="text-[#64748B]">1/15/2024</p>
+
+
+            </div>
+           
             
-        </Section>
-        <Section>
-
-        </Section>
-
+            
+        </section>
+        
+        
+        
     </main>
     <script src="home.js"></script>
 </body>
