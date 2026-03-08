@@ -35,13 +35,13 @@
                 <h2 class="font-semibold text-2xl">GitHub Issues Tracker</h2>
             </div>
             <div class="flex gap-2">
-                <input type="text" placeholder="Search" class="input input-bordered w-24 md:w-auto" />
-                <button class="btn btn-primary"><i class="fa-solid fa-plus"></i>New Issue</button>
+                <input id="search-Input" type="text" placeholder="Search" class="input input-bordered w-24 md:w-auto" />
+                <button id="search-Btn" class="btn btn-primary">Search</button>
             </div>
         </Section>
     </header>
     <main class="w-5/6 mx-auto py-10">
-        <!-- filter buttons sectio -->
+        <!-- filter buttons section -->
         <Section class="bg-white my-5 px-5 py-5 shadow-sm rounded-xl">
             <button onclick="activeBtn('all-Btn')" id="all-Btn" class="btn btn-primary px-10">All</button>
             <button onclick="activeBtn('open-Btn')" id="open-Btn" class="btn px-10">Open</button>
@@ -61,12 +61,39 @@
                 <div class="status status-primary "></div>Closed
             </div>      
         </Section>
+        <!-- spinner -->
+        <section id="spinner" class="flex justify-center items-center my-10 hidden">
+            <span class="loading loading-spinner loading-xl "></span>
+        </section>
+        
         <!-- cards section -->
         <section id="cards-Container" class="bg-white px-5 py-5 border-t border-[#d5d9df] rounded-b-xl grid grid-cols-4 gap-5">
             <!-- card -->
         </section>
         
         
+        
+        
+        <!-- Open the modal using ID.showModal() method -->
+        <!-- <button class="btn" onclick="my_modal_5.showModal()">open modal</button> -->
+        <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <h3 id="modal-title" class="text-lg font-bold"></h3>
+            <p><strong>Status:</strong> <span id="modal-status"></span></p>
+
+            <p><strong>Priority:</strong> <span id="modal-priority"></span></p>
+
+            <p><strong>Assignee:</strong> <span id="modal-assignee"></span></p>
+
+            <p><strong>Last Updated:</strong> <span id="modal-updated"></span></p>
+            <div class="modal-action">
+                <form method="dialog">
+                    <!-- if there is a button in form, it will close the modal -->
+                    <button class="btn">Close</button>
+                </form>
+            </div>
+        </div>
+        </dialog>
         
     </main>
     <script src="home.js"></script>

@@ -27,6 +27,7 @@ const activeBtn=(id)=>{
 
 
 const loadAllData=()=>{
+    
     fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(response=>response.json())
     .then((json)=>displayAllData(json.data))
@@ -139,6 +140,8 @@ const displayAllData=(issues)=>{
         
         card.classList.add('bg-white','px-5','py-5','shadow-sm','rounded-xl','border-t-3','space-y-8', borderColor)
 
+        card.onclick = () => openIssueModal(issue)
+
         card.innerHTML = `
         <div class="flex justify-between">
             <img src="${statusImg}" alt="">
@@ -159,12 +162,61 @@ const displayAllData=(issues)=>{
         <p class="text-[#64748B]">#${issue.id} by ${issue.author}</p>
         <p class="text-[#64748B]">${issue.createdAt}</p>
         `
-    
+        
+        
         
         cardsContainer.append(card)
-
+        
     
     }
+
+
 }
 
 
+const openIssueModal = (issue) => {
+
+    document.getElementById('modal-title').innerText = issue.title
+    document.getElementById('modal-status').innerText = issue.status
+    document.getElementById('modal-priority').innerText = issue.priority
+    document.getElementById('modal-assignee').innerText = issue.assignee
+    document.getElementById('modal-updated').innerText = issue.updatedAt
+
+    document.getElementById('my_modal_5').showModal()
+}
+
+
+// spinnig function while loading
+const manageSpinner=(status)=>{
+    if(status==true){
+        document.getElementById('spinner').classList.remove('hidden')
+        document.getElementById('cards-Container').classList.add('hidden')
+    }
+    else{
+        document.getElementById('spinner').classList.add('hidden')
+        document.getElementById('cards-Container').classList.remove('hidden')
+    }
+}
+
+// search
+const searchIssues=()=>{
+    const searchInput = document.getElementById('search-Input').value
+    if(searchInput === '') return
+
+    manageSpinner(true)
+
+    fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchInput}`)
+    .then(response=>response.json())
+    .then(json=>{
+        displayAllData(json.data)
+        manageSpinner(false)
+    })
+
+}
+
+document.getElementById('search-Btn').addEventListener('click', ()=>{
+    document.getElementById('all-Btn').classList.remove('btn-primary')
+    document.getElementById('open-Btn').classList.remove('btn-primary')
+    document.getElementById('closed-Btn').classList.remove('btn-primary')
+    searchIssues()
+})
