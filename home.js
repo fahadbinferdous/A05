@@ -1,3 +1,28 @@
+// search
+const searchIssues=()=>{
+    const searchInput = document.getElementById('search-Input').value
+    if(searchInput === '') return
+
+    manageSpinner(true)
+
+    fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchInput}`)
+    .then(response=>response.json())
+    .then(json=>{
+        displayAllData(json.data)
+        manageSpinner(false)
+    })
+
+}
+
+document.getElementById('search-Btn').addEventListener('click', ()=>{
+    document.getElementById('all-Btn').classList.remove('btn-primary')
+    document.getElementById('open-Btn').classList.remove('btn-primary')
+    document.getElementById('closed-Btn').classList.remove('btn-primary')
+    searchIssues()
+})
+
+
+// filter buttons
 const activeBtn=(id)=>{
     document.getElementById('all-Btn').classList.remove('btn-primary')
     document.getElementById('open-Btn').classList.remove('btn-primary')
@@ -26,39 +51,68 @@ const activeBtn=(id)=>{
 }
 
 
+
+// spinnig function while loading
+const manageSpinner=(status)=>{
+    if(status==true){
+        document.getElementById('spinner').classList.remove('hidden')
+        document.getElementById('cards-Container').classList.add('hidden')
+    }
+    else{
+        document.getElementById('spinner').classList.add('hidden')
+        document.getElementById('cards-Container').classList.remove('hidden')
+    }
+}
+
+
+
+// cards-Container
+
+
+// cards for all tab
 const loadAllData=()=>{
-    
+    manageSpinner(true)
     fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(response=>response.json())
-    .then((json)=>displayAllData(json.data))
+    .then((json)=>{
+        
+        displayFunction(json.data)
+        manageSpinner(false)
+    })
+    
 }
 
 loadAllData()
 
-
+// cards for open tab
 const loadOpenData = () => {
+    manageSpinner(true)
     fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(response => response.json())
     .then(json => {
         const openIssues = json.data.filter(issue => issue.status === 'open')
-        displayAllData(openIssues)
+        displayFunction(openIssues)
+        manageSpinner(false)
     })
 }
 
 
 
-
-
+// cards for close tab
 const loadClosedData = () => {
+    manageSpinner(true)
     fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues')
     .then(response => response.json())
     .then(json => {
         const closedIssues = json.data.filter(issue => issue.status === 'closed')
-        displayAllData(closedIssues)
+        displayFunction(closedIssues)
+        manageSpinner(false)
     })
 }
 
 
+
+// 
 
 
 // {
@@ -78,7 +132,8 @@ const loadClosedData = () => {
 // }
 
 
-const displayAllData=(issues)=>{
+// display function
+const displayFunction=(issues)=>{
     const cardsContainer=document.getElementById('cards-Container')
     cardsContainer.innerHTML=''
     document.getElementById('total-Issues').innerText = issues.length
@@ -138,7 +193,7 @@ const displayAllData=(issues)=>{
 
 
         
-        card.classList.add('bg-white','px-5','py-5','shadow-sm','rounded-xl','border-t-3','space-y-8', borderColor)
+        card.classList.add('bg-white','px-5','py-5','shadow-sm','rounded-xl','border-t-3','space-y-8', 'cursor-pointer' ,borderColor)
 
         card.onclick = () => openIssueModal(issue)
 
@@ -176,47 +231,18 @@ const displayAllData=(issues)=>{
 
 const openIssueModal = (issue) => {
 
-    document.getElementById('modal-title').innerText = issue.title
-    document.getElementById('modal-status').innerText = issue.status
-    document.getElementById('modal-priority').innerText = issue.priority
-    document.getElementById('modal-assignee').innerText = issue.assignee
-    document.getElementById('modal-updated').innerText = issue.updatedAt
-
+    document.getElementById('modal-Title').innerText = issue.title
+    document.getElementById('modal-Status').innerText = issue.status
+    document.getElementById('modal-UpdatedAt').innerText = issue.updatedAt
+    document.getElementById('modal-Labels').innerText = issue.labels
+    document.getElementById('modal-Description').innerText = issue.description
+    document.getElementById('modal-Priority').innerText = issue.priority
+    document.getElementById('modal-Assignee').innerText = issue.assignee
+    document.getElementById('modal-Viewer').innerText = issue.assignee
+    
     document.getElementById('my_modal_5').showModal()
 }
 
 
-// spinnig function while loading
-const manageSpinner=(status)=>{
-    if(status==true){
-        document.getElementById('spinner').classList.remove('hidden')
-        document.getElementById('cards-Container').classList.add('hidden')
-    }
-    else{
-        document.getElementById('spinner').classList.add('hidden')
-        document.getElementById('cards-Container').classList.remove('hidden')
-    }
-}
 
-// search
-const searchIssues=()=>{
-    const searchInput = document.getElementById('search-Input').value
-    if(searchInput === '') return
 
-    manageSpinner(true)
-
-    fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchInput}`)
-    .then(response=>response.json())
-    .then(json=>{
-        displayAllData(json.data)
-        manageSpinner(false)
-    })
-
-}
-
-document.getElementById('search-Btn').addEventListener('click', ()=>{
-    document.getElementById('all-Btn').classList.remove('btn-primary')
-    document.getElementById('open-Btn').classList.remove('btn-primary')
-    document.getElementById('closed-Btn').classList.remove('btn-primary')
-    searchIssues()
-})
