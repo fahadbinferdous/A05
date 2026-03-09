@@ -8,7 +8,7 @@ const searchIssues=()=>{
     fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchInput}`)
     .then(response=>response.json())
     .then(json=>{
-        displayAllData(json.data)
+        displayFunction(json.data)
         manageSpinner(false)
     })
 
@@ -140,7 +140,7 @@ const displayFunction=(issues)=>{
     for(const issue of issues){
         
         const card=document.createElement('div')
-        card.classList.add('bg-white', 'px-5', 'py-5', 'shadow-sm', 'rounded-xl', 'border-t-3', 'space-y-5')
+        
 
         let statusImg = ''
         let borderColor = ''
@@ -195,7 +195,7 @@ const displayFunction=(issues)=>{
         
         card.classList.add('bg-white','px-5','py-5','shadow-sm','rounded-xl','border-t-3','space-y-8', 'cursor-pointer' ,borderColor)
 
-        card.onclick = () => openIssueModal(issue)
+        card.setAttribute("onclick", `loadModalDetails(${issue.id})`)
 
         card.innerHTML = `
         <div class="flex justify-between">
@@ -229,20 +229,64 @@ const displayFunction=(issues)=>{
 }
 
 
-const openIssueModal = (issue) => {
+// {
+//     "id": 1,
+//     "title": "Fix navigation menu on mobile devices",
+//     "description": "The navigation menu doesn't collapse properly on mobile devices. Need to fix the responsive behavior.",
+//     "status": "open",
+//     "labels": [
+//         "bug",
+//         "help wanted"
+//     ],
+//     "priority": "high",
+//     "author": "john_doe",
+//     "assignee": "jane_smith",
+//     "createdAt": "2024-01-15T10:30:00Z",
+//     "updatedAt": "2024-01-15T10:30:00Z"
+// }
 
-    document.getElementById('modal-Title').innerText = issue.title
-    document.getElementById('modal-Status').innerText = issue.status
-    document.getElementById('modal-UpdatedAt').innerText = issue.updatedAt
-    document.getElementById('modal-Labels').innerText = issue.labels
-    document.getElementById('modal-Description').innerText = issue.description
-    document.getElementById('modal-Priority').innerText = issue.priority
-    document.getElementById('modal-Assignee').innerText = issue.assignee
-    document.getElementById('modal-Viewer').innerText = issue.assignee
+
+
+
+// modal function
+
+const loadModalDetails = async (id) => {
+    const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`
+    const response = await fetch(url)
+    const result = await response.json()
     
+    
+    displayModalDetails(result.data)    
+
+};
+
+
+const displayModalDetails=(id)=>{
+    const modalElements=document.getElementById('modal-Elements')
+    modalElements.innerHTML=`
+                <h3 class="text-2xl font-bold">${id.title}</h3>
+                <div class="md:flex justify-between">
+                    <p class="badge badge-neutral badge-outline">${id.status}</p>
+                    <p><span class="text-xs text-[#64748B]">by: </span>${id.assignee}</p>
+                    <p><span class="text-xs text-[#64748B]">at </span>${id.updatedAt}</p>
+                </div>            
+                <div class='space-x-1'>
+                    ${createLabelElements(id.labels)}
+                </div>    
+                <p id="modal-Description" class="text-[#64748B]">${id.description}</p>    
+                <div class="flex justify-between">
+                    <p><span class="text-xs text-[#64748B]"">Priority: </span>${id.priority}</p>
+                    <p><span class="text-xs text-[#64748B]">Assignee: </span>${id.assignee}</p>
+                </div>            
+    `
     document.getElementById('my_modal_5').showModal()
+
 }
 
-
+const createLabelElements=(arr)=>{
+        const htmlElements=arr.map((element)=>`<span class='badge badge-outline'>${element}</span>`)            
+        return (htmlElements.join(''))       
+    
+}
 
 
